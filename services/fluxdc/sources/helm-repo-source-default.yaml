@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: helm-repo-source
+  namespace: default
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: chartrepo-secret
+  url: https://github.com/skochamu/helmcharts2.git
