@@ -1,0 +1,28 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: de-5g--ping-3bmumsues-0-0-0
+  namespace: default
+spec:
+  chart:
+    spec:
+      chart: ping
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: sarath-helm
+        namespace: flux-system
+      version: 0.3.0
+  interval: 5m0s
+  postRenderers:
+  - kustomize:
+      patches:
+      - patch: "\n- op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-id\n\
+          \  value: service:DZSXNetworkFunction:default:cf8dab26-72dd-4f39-aec2-2da53aae5435\n\
+          - op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-href\n\
+          \  value: https://10.157.107.67:8008/tmf-api/mano/serviceInventory/v4/default/service/service:DZSXNetworkFunction:default:cf8dab26-72dd-4f39-aec2-2da53aae5435\n"
+        target:
+          kind: (Deployment|ReplicaSet|StatefulSet|DaemonSet)
+  releaseName: de-5g--ping-3bmumsues-0-0-0
+  targetNamespace: default
+  values: {}
