@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: de-pp1-pong-7kcid9rpm-0-0-1
+  namespace: default
+spec:
+  chart:
+    spec:
+      chart: ./fluxdc/PP1/de-pp1-pong-7kcid9rpm-0-0-1
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: GitRepository
+        name: chartvaultrepo
+        namespace: default
+  interval: 5m0s
+  postRenderers:
+  - kustomize:
+      patches:
+      - patch: "\n- op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-id\n\
+          \  value: service:DZSXNetworkFunction:default:945619b4-b6a7-44f8-aa05-1e2cf03650ba\n\
+          - op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-href\n\
+          \  value: https://10.157.107.67:8008/tmf-api/mano/serviceInventory/v4/default/service/service:DZSXNetworkFunction:default:945619b4-b6a7-44f8-aa05-1e2cf03650ba\n"
+        target:
+          kind: (Deployment|ReplicaSet|StatefulSet|DaemonSet)
+  releaseName: de-pp1-pong-7kcid9rpm-0-0-1
+  targetNamespace: default
+  values: {}
