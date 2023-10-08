@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: de-pp1-ping-xcvwsspc4-0-0-0
+  namespace: default
+spec:
+  chart:
+    spec:
+      chart: ./fluxdc/PP1/de-pp1-ping-xcvwsspc4-0-0-0
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: GitRepository
+        name: chartvaultrepo
+        namespace: default
+  interval: 5m0s
+  postRenderers:
+  - kustomize:
+      patches:
+      - patch: "\n- op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-id\n\
+          \  value: service:DZSXNetworkFunction:default:c99350d3-4ed8-4e3e-906c-4bffdd9cd8ff\n\
+          - op: add\n  path: /spec/template/metadata/annotations/dzsi.com~1dzsx-network-function-href\n\
+          \  value: https://10.157.107.67:8008/tmf-api/mano/serviceInventory/v4/default/service/service:DZSXNetworkFunction:default:c99350d3-4ed8-4e3e-906c-4bffdd9cd8ff\n"
+        target:
+          kind: (Deployment|ReplicaSet|StatefulSet|DaemonSet)
+  releaseName: de-pp1-ping-xcvwsspc4-0-0-0
+  targetNamespace: default
+  values: {}
