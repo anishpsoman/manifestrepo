@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: dt-dt3-ping-rg9xxeqvd-0-0-0
+  namespace: default
+spec:
+  values:
+    global:
+      namespace: asoman
+      nsId: 59df6695-396e-4215-95b4-34640569cb56
+    image:
+      imagePullSecrets: []
+      pullPolicy: IfNotPresent
+      repository: rt.cloud.dzsi.local/docker/rw.ping
+      tag: '2004'
+    macvlanNetName: dtdt3macvlanlinkprofile
+    macvlanNetNamespace: asoman
+    metrics:
+      annotations:
+        path: /api/v1/ping/metrics
+        port: 18888
+        scrape: true
+      enabled: true
+    replicaCount: 1
+    service:
+      type: NodePort
